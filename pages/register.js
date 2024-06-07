@@ -10,6 +10,7 @@ import {
 import { useAuth } from "@/firebase/auth";
 import { useRouter } from "next/router";
 import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState(null);
@@ -63,9 +64,12 @@ const RegisterForm = () => {
           <h1 className="text-6xl font-semibold">Sign Up</h1>
           <p className="mt-6 ml-1">
             Already have an account ?{" "}
-            <span className="underline hover:text-blue-400 cursor-pointer">
+            <Link
+              href={"/login"}
+              className="underline hover:text-blue-400 cursor-pointer"
+            >
               Login
-            </span>
+            </Link>
           </p>
 
           <div

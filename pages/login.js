@@ -9,6 +9,7 @@ import {
 import { useAuth } from "@/firebase/auth";
 import { useRouter } from "next/router";
 import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const provider = new GoogleAuthProvider();
 
@@ -52,9 +53,12 @@ const LoginForm = () => {
           <h1 className="text-6xl font-semibold">Login</h1>
           <p className="mt-6 ml-1">
             Don't have an account ?{" "}
-            <span className="underline hover:text-blue-400 cursor-pointer">
+            <Link
+              href={"/register"}
+              className="underline hover:text-blue-400 cursor-pointer"
+            >
               Sign Up
-            </span>
+            </Link>
           </p>
 
           <div
