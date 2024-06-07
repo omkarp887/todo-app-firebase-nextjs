@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../firebase/firebase";
 import {
@@ -7,11 +7,23 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { useAuth } from "@/firebase/auth";
+import { useRouter } from "next/router";
+import Loader from "@/components/Loader";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const { authUser, isLoading, setAuthUser } = useAuth();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && authUser) {
+      router.push("/");
+    }
+  }, [authUser, isLoading]);
 
   const signupHandler = async () => {
     if (!email || !username || !password) return;
@@ -19,6 +31,11 @@ const RegisterForm = () => {
       const user = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(auth.currentUser, {
         displayName: username,
+      });
+      setAuthUser({
+        uid: user.uid,
+        email: user.email,
+        username,
       });
       console.log(user);
     } catch (error) {
@@ -37,7 +54,9 @@ const RegisterForm = () => {
     }
   };
 
-  return (
+  return isLoading || (!isLoading && authUser) ? (
+    <Loader />
+  ) : (
     <main className="flex lg:h-[100vh]">
       <div className="w-full lg:w-[60%] p-8 md:p-14 flex items-center justify-center lg:justify-start">
         <div className="p-8 w-[600px]">
